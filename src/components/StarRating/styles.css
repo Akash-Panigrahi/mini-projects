@@ -1,0 +1,21 @@
+.star-rating {
+  display: flex;
+  gap: 5px;
+  cursor: pointer;
+}
+
+.star {
+  font-size: 2rem;
+  color: #e4e5e9;
+  transition: color 200ms ease;
+}
+
+.star.full {
+  color: yellow;
+}
+
+.star.half {
+  background-image: linear-gradient(90deg, yellow 50%, #e4e5e9 50%);
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}

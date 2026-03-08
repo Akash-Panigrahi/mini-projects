@@ -1,6 +1,7 @@
 import "./App.css";
 import Home from "./components/Home/Home";
 import StarRating from "./components/StarRating/StarRating";
+import StarRatingHalf from "./components/StarRating/StarRatingHalf";
 
 const PROJECTS = [
   {
@@ -10,6 +11,10 @@ const PROJECTS = [
   {
     component: StarRating,
     url: "/star-rating",
+  },
+  {
+    component: StarRatingHalf,
+    url: "/star-rating-half",
   },
 ];
 
@@ -21,6 +26,9 @@ function App() {
   switch (pathname) {
     case "/star-rating":
       Component = StarRating;
+      break;
+    case "/star-rating-half":
+      Component = StarRatingHalf;
       break;
     case "/home":
     default:
