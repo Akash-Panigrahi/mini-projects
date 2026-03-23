@@ -2,6 +2,7 @@ import "./App.css";
 import Home from "./components/Home/Home";
 import StarRating from "./components/StarRating/StarRating";
 import StarRatingHalf from "./components/StarRating/StarRatingHalf";
+import ToDo from "./components/ToDo/ToDo";
 
 const PROJECTS = [
   {
@@ -16,6 +17,10 @@ const PROJECTS = [
     component: StarRatingHalf,
     url: "/star-rating-half",
   },
+  {
+    component: ToDo,
+    url: "/todo",
+  },
 ];
 
 function App() {
@@ -29,6 +34,9 @@ function App() {
       break;
     case "/star-rating-half":
       Component = StarRatingHalf;
+      break;
+    case "/todo":
+      Component = ToDo;
       break;
     case "/home":
     default:
