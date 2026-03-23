@@ -59,6 +59,20 @@ function ToDo() {
     });
   };
 
+  const handleReorder = ({ fromIndex, overIndex }) => {
+    setState((prev) => {
+      const updated = [...prev.todos];
+      const [moved] = updated.splice(fromIndex, 1);
+      updated.splice(
+        fromIndex < overIndex ? overIndex - 1 : overIndex,
+        0,
+        moved,
+      );
+
+      return { ...prev, todos: updated };
+    });
+  };
+
   return (
     <>
       <Input addToDo={handleAddToDo} />
@@ -69,6 +83,7 @@ function ToDo() {
         todos={filteredTodos}
         onToggleComplete={handleToggleComplete}
         onDelete={handleDelete}
+        onReorder={handleReorder}
       />
     </>
   );

@@ -11,8 +11,15 @@ function Input({ addToDo }) {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input name="new-todo-text" />
+    <form
+      onSubmit={handleSubmit}
+      style={{
+        display: "flex",
+        gap: "16px",
+        padding: "8px",
+      }}
+    >
+      <input autoFocus name="new-todo-text" />
       <button type="reset">Clear</button>
       <button type="submit">Add ToDo</button>
     </form>
