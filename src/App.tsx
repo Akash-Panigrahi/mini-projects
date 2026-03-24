@@ -1,5 +1,7 @@
 import "./App.css";
 import Home from "./components/Home/Home";
+import ModalPage from "./components/Modal/ModalPage";
+import { ModalProvider } from "./components/Modal/ModalContext";
 import StarRating from "./components/StarRating/StarRating";
 import StarRatingHalf from "./components/StarRating/StarRatingHalf";
 import ToDo from "./components/ToDo/ToDo";
@@ -21,28 +23,16 @@ const PROJECTS = [
     component: ToDo,
     url: "/todo",
   },
+  {
+    component: ModalPage,
+    url: "/modal",
+  },
 ];
 
 function App() {
-  let Component;
-
   const pathname = window.location.pathname;
-
-  switch (pathname) {
-    case "/star-rating":
-      Component = StarRating;
-      break;
-    case "/star-rating-half":
-      Component = StarRatingHalf;
-      break;
-    case "/todo":
-      Component = ToDo;
-      break;
-    case "/home":
-    default:
-      Component = Home;
-      break;
-  }
+  const Component = PROJECTS.find((project) => project.url === pathname)
+    ?.component || <></>;
 
   if (pathname === "/") {
     return PROJECTS.map((project) => (
@@ -58,7 +48,11 @@ function App() {
     ));
   }
 
-  return <Component />;
+  return (
+    <ModalProvider>
+      <Component />
+    </ModalProvider>
+  );
 }
 
 export default App;
