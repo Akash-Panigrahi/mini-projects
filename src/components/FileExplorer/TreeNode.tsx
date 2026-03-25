@@ -1,3 +1,5 @@
+import { highlight } from "./utils";
+
 function TreeNode({
   node,
   expanded,
@@ -5,6 +7,7 @@ function TreeNode({
   onRenameNode,
   onDeleteNode,
   onFolderToggle,
+  searchQuery,
   depth = 0,
 }) {
   const isOpen = expanded.has(node.id);
@@ -38,7 +41,7 @@ function TreeNode({
           <span className="icon">
             {node.type === "file" ? "📃" : isOpen ? "📂" : "📁"}
           </span>
-          <span>{node.name}</span>[
+          <span>{highlight(node.name, searchQuery)}</span>[
         </div>
         {node.type === "folder" && (
           <span onClick={() => onAddNode(node.id)}>Add</span>
@@ -59,6 +62,7 @@ function TreeNode({
               onFolderToggle={onFolderToggle}
               onRenameNode={onRenameNode}
               onDeleteNode={onDeleteNode}
+              searchQuery={searchQuery}
               depth={depth + 1}
             />
           );

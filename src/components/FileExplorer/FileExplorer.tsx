@@ -1,6 +1,6 @@
 import { useState } from "react";
 import TreeNode from "./TreeNode";
-import { addNode, deleteNode, renameNode } from "./utils";
+import { addNode, deleteNode, renameNode, searchTree } from "./utils";
 
 const initialTree = [
   {
@@ -58,6 +58,7 @@ const initialTree = [
 function FileExplorer() {
   const [tree, setTree] = useState(initialTree);
   const [expanded, setExpanded] = useState(new Set());
+  const [query, setQuery] = useState("");
 
   const handleFolderToggle = (id) => {
     setExpanded((prev) => {
@@ -95,18 +96,34 @@ function FileExplorer() {
     setTree((prev) => deleteNode(prev, id));
   };
 
+  const handleSearchChange = (e) => {
+    const text = e.target.value;
+    setQuery(text);
+  };
+
+  const filteredExpanded = new Set();
+  const filteredTree = searchTree(
+    tree,
+    query.trim().toLowerCase(),
+    filteredExpanded,
+  );
+  const finalExpanded = query ? filteredExpanded : expanded;
+
   return (
     <div className="tree">
-      {tree.map((node) => {
+      <input value={query} onChange={handleSearchChange} />
+
+      {filteredTree.map((node) => {
         return (
           <TreeNode
             key={node.id}
             node={node}
-            expanded={expanded}
+            expanded={finalExpanded}
             onFolderToggle={handleFolderToggle}
             onAddNode={handleAddNode}
             onRenameNode={handleRenameNode}
             onDeleteNode={handleDeleteNode}
+            searchQuery={query}
           />
         );
       })}
