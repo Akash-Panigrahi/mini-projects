@@ -5,6 +5,7 @@ import { ModalProvider } from "./components/Modal/ModalContext";
 import StarRating from "./components/StarRating/StarRating";
 import StarRatingHalf from "./components/StarRating/StarRatingHalf";
 import ToDo from "./components/ToDo/ToDo";
+import FileExplorer from "./components/FileExplorer/FileExplorer";
 
 const PROJECTS = [
   {
@@ -26,6 +27,10 @@ const PROJECTS = [
   {
     component: ModalPage,
     url: "/modal",
+  },
+  {
+    component: FileExplorer,
+    url: "/file-explorer",
   },
 ];
 
