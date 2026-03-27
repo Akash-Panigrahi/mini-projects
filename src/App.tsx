@@ -6,6 +6,8 @@ import StarRating from "./components/StarRating/StarRating";
 import StarRatingHalf from "./components/StarRating/StarRatingHalf";
 import ToDo from "./components/ToDo/ToDo";
 import FileExplorer from "./components/FileExplorer/FileExplorer";
+import VirtualizedList from "./components/VirtualizedList/VirtualizedList";
+import VirtualizedListVariableHeights from "./components/VirtualizedList/VirtualizedListVariableHeights";
 
 const PROJECTS = [
   {
@@ -31,6 +33,14 @@ const PROJECTS = [
   {
     component: FileExplorer,
     url: "/file-explorer",
+  },
+  {
+    component: VirtualizedList,
+    url: "/virtualized-list",
+  },
+  {
+    component: VirtualizedListVariableHeights,
+    url: "/virtualized-list-variable-heights",
   },
 ];
 
