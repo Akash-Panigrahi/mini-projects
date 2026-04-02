@@ -8,6 +8,8 @@ import ToDo from "./components/ToDo/ToDo";
 import FileExplorer from "./components/FileExplorer/FileExplorer";
 import VirtualizedList from "./components/VirtualizedList/VirtualizedList";
 import VirtualizedListVariableHeights from "./components/VirtualizedList/VirtualizedListVariableHeights";
+import InfiniteScrolling from "./components/InfiniteScrolling/InfiniteScrolling";
+import AutoComplete from "./components/AutoComplete/AutoComplete";
 
 const PROJECTS = [
   {
@@ -41,6 +43,14 @@ const PROJECTS = [
   {
     component: VirtualizedListVariableHeights,
     url: "/virtualized-list-variable-heights",
+  },
+  {
+    component: InfiniteScrolling,
+    url: "/infinite-scrolling",
+  },
+  {
+    component: AutoComplete,
+    url: "/autocomplete",
   },
 ];
 
