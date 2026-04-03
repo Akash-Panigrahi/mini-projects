@@ -1,17 +1,17 @@
 import { useRef, useState } from "react";
 
-const list = Array.from({ length: 1000 }, (_, i) => i);
+const dummyList = Array.from({ length: 1000 }, (_, i) => ({ id: i, title: i }));
 const ITEM_HEIGHT = 40;
 const MAX_CONTAINER_HEIGHT = 400;
-const TOTAL_HEIGHT = ITEM_HEIGHT * list.length;
 const BUFFER = 5;
 
-function VirtualizedList() {
+function VirtualizedList({ list = dummyList }) {
   const [scrollTop, setScrollTop] = useState(0);
   const rAFTicking = useRef(false);
   const startIndex = Math.floor(scrollTop / ITEM_HEIGHT);
   const visibleCount = Math.ceil(MAX_CONTAINER_HEIGHT / ITEM_HEIGHT);
   const endIndex = startIndex + visibleCount;
+  const TOTAL_HEIGHT = ITEM_HEIGHT * list.length;
 
   const from = Math.max(0, startIndex - BUFFER);
   const to = Math.min(endIndex + BUFFER, list.length);
@@ -40,17 +40,30 @@ function VirtualizedList() {
         <div style={{ translate: `0 ${from * ITEM_HEIGHT}px` }}>
           {visibleItems.map((item) => (
             <div
-              key={item}
+              key={item.id}
               style={{
                 height: ITEM_HEIGHT,
                 display: "flex",
                 alignItems: "center",
-                justifyContent: "center",
-                width: 200,
+                width: 400,
                 borderBottom: "1px solid #eee",
+                padding: "8px 16px",
               }}
             >
-              {item}
+              <span>{item.id}</span>
+              <span
+                title={String(item.title)}
+                style={{
+                  marginLeft: "16px",
+                  flex: 1,
+                  textOverflow: "ellipsis",
+                  overflow: "hidden",
+                  textAlign: "left",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                {item.title}
+              </span>
             </div>
           ))}
         </div>
