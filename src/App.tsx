@@ -10,6 +10,7 @@ import VirtualizedList from "./components/VirtualizedList/VirtualizedList";
 import VirtualizedListVariableHeights from "./components/VirtualizedList/VirtualizedListVariableHeights";
 import InfiniteScrolling from "./components/InfiniteScrolling/InfiniteScrolling";
 import AutoComplete from "./components/AutoComplete/AutoComplete";
+import ReverseInfiniteScrolling from "./components/InfiniteScrolling/ReverseInfiniteScrolling";
 
 const PROJECTS = [
   {
@@ -47,6 +48,10 @@ const PROJECTS = [
   {
     component: InfiniteScrolling,
     url: "/infinite-scrolling",
+  },
+  {
+    component: ReverseInfiniteScrolling,
+    url: "/reverse-infinite-scrolling",
   },
   {
     component: AutoComplete,
