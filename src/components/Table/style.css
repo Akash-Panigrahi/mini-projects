@@ -1,6 +1,22 @@
+* {
+  box-sizing: border-box;
+}
+
+table {
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
 td,
 th {
   padding: 12px;
+  border: 1px solid #3f3e3e;
+}
+
+td span {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 tbody tr {
@@ -11,4 +27,12 @@ tbody tr {
   &:nth-child(even) {
     background: #1e1e1e;
   }
+}
+
+#pagination {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  justify-content: center;
+  margin-top: 32px;
 }

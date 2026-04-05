@@ -182,6 +182,8 @@ function Table() {
     filters,
     setFilters,
     sortConfig,
+    columnWidths,
+    onMouseDown,
   } = useTable({
     columns,
     data: initialData,
@@ -200,19 +202,42 @@ function Table() {
       <table>
         <thead>
           <tr>
-            {columns.map((column) => (
-              <th key={column.key}>
+            {columns.map((column, index) => (
+              <th
+                key={column.key}
+                style={{
+                  position: "relative",
+                  width: columnWidths[column.key],
+                }}
+              >
                 <div onClick={(e) => toggleSort(column.key, e.shiftKey)}>
                   {column.label} {getSortIndicator(column.key)}
                 </div>
+
+                {index !== columns.length - 1 && (
+                  <div
+                    onMouseDown={(e) => onMouseDown(e, column.key, index)}
+                    style={{
+                      position: "absolute",
+                      top: 0,
+                      right: "-4px",
+                      height: "100%",
+                      width: "6px",
+                      background: "grey",
+                      cursor: "col-resize",
+                      userSelect: "none",
+                    }}
+                  />
+                )}
               </th>
             ))}
           </tr>
 
           <tr>
             {columns.map((column) => (
-              <th key={column.key} style={{ paddingTop: 0 }}>
+              <th key={column.key}>
                 <input
+                  style={{ width: "90%" }}
                   value={filters[column.key] || ""}
                   onChange={(e) => {
                     setFilters((prev) => ({
@@ -230,11 +255,21 @@ function Table() {
         <tbody>
           {data.map((row) => (
             <tr key={row.id}>
-              <td>{row.id}</td>
-              <td>{row.name}</td>
-              <td>{row.email}</td>
-              <td>{row.role}</td>
-              <td>{row.status}</td>
+              <td>
+                <span>{row.id}</span>
+              </td>
+              <td>
+                <span>{row.name}</span>
+              </td>
+              <td>
+                <span>{row.email}</span>
+              </td>
+              <td>
+                <span>{row.role}</span>
+              </td>
+              <td>
+                <span>{row.status}</span>
+              </td>
             </tr>
           ))}
         </tbody>

@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 
 const PAGE_SIZE = 5;
 
@@ -6,6 +6,19 @@ function useTable({ columns, data }) {
   const [sortConfig, setSortConfig] = useState([]);
   const [filters, setFilters] = useState({});
   const [page, setPage] = useState(1);
+  const [columnWidths, setColumnWidths] = useState<Record<string, number>>(
+    () => {
+      const initial: Record<string, number> = {};
+
+      columns.forEach(
+        (column: Record<string, string>) => (initial[column.key] = 150),
+      );
+
+      return initial;
+    },
+  );
+
+  const columnResizeRef = useRef(null);
 
   const toggleSort = (key: string, isMulti: boolean) => {
     setSortConfig((prev) => {
@@ -33,8 +46,6 @@ function useTable({ columns, data }) {
 
     setPage(1);
   };
-
-  console.log(sortConfig);
 
   const sortedData = useMemo(() => {
     if (!sortConfig) return data;
@@ -72,6 +83,51 @@ function useTable({ columns, data }) {
   const finalData = paginatedData;
   const totalPages = Math.ceil(filteredData.length / PAGE_SIZE);
 
+  const onMouseMove = (e: MouseEvent) => {
+    if (!columnResizeRef.current) return;
+
+    const { key, startX, startWidth, nextKey, nextWidth } =
+      columnResizeRef.current;
+
+    const delta = e.clientX - startX;
+    const newWidth = startWidth + delta;
+    const newNextWidth = nextWidth + delta;
+
+    requestAnimationFrame(() => {
+      setColumnWidths((prev) => ({
+        ...prev,
+        [key]: newWidth,
+        [nextKey]: newNextWidth,
+      }));
+    });
+  };
+
+  const onMouseUp = (e: MouseEvent) => {
+    columnResizeRef.current = null;
+    document.body.style.userSelect = "";
+    document.removeEventListener("mousemove", onMouseMove);
+    document.removeEventListener("mouseup", onMouseUp);
+  };
+
+  const onMouseDown = (e: MouseEvent, key: string, index: number) => {
+    e.preventDefault();
+
+    const nextKey = columns[index + 1];
+    if (!nextKey) return;
+
+    columnResizeRef.current = {
+      key,
+      startX: e.clientX,
+      startWidth: columnWidths[key],
+      nextKey,
+      nextWidth: columnWidths[nextKey],
+    };
+
+    document.body.style.userSelect = "none";
+    document.addEventListener("mousemove", onMouseMove);
+    document.addEventListener("mouseup", onMouseUp);
+  };
+
   return {
     data: finalData,
     toggleSort,
@@ -81,6 +137,8 @@ function useTable({ columns, data }) {
     filters,
     setFilters,
     sortConfig,
+    columnWidths,
+    onMouseDown,
   };
 }
 
