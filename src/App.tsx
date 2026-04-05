@@ -11,6 +11,7 @@ import VirtualizedListVariableHeights from "./components/VirtualizedList/Virtual
 import InfiniteScrolling from "./components/InfiniteScrolling/InfiniteScrolling";
 import AutoComplete from "./components/AutoComplete/AutoComplete";
 import ReverseInfiniteScrolling from "./components/InfiniteScrolling/ReverseInfiniteScrolling";
+import Table from "./components/Table/Table";
 
 const PROJECTS = [
   {
@@ -56,6 +57,10 @@ const PROJECTS = [
   {
     component: AutoComplete,
     url: "/autocomplete",
+  },
+  {
+    component: Table,
+    url: "/table",
   },
 ];
 
