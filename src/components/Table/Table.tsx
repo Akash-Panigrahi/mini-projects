@@ -187,6 +187,14 @@ function Table() {
     data: initialData,
   });
 
+  const getSortIndicator = (key: string) => {
+    const idx = sortConfig.findIndex((s) => s.key === key);
+    if (idx === -1) return "";
+
+    const { dir } = sortConfig[idx];
+    return dir === "asc" ? <>&#8593;</> : <>&#8595;</>;
+  };
+
   return (
     <div>
       <table>
@@ -194,10 +202,8 @@ function Table() {
           <tr>
             {columns.map((column) => (
               <th key={column.key}>
-                <div onClick={() => toggleSort(column.key)}>
-                  {column.label}{" "}
-                  {sortConfig?.key === column.key &&
-                    (sortConfig?.dir === "asc" ? <>&#8593;</> : <>&#8595;</>)}
+                <div onClick={(e) => toggleSort(column.key, e.shiftKey)}>
+                  {column.label} {getSortIndicator(column.key)}
                 </div>
               </th>
             ))}

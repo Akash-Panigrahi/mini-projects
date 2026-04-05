@@ -3,38 +3,55 @@ import { useMemo, useState } from "react";
 const PAGE_SIZE = 5;
 
 function useTable({ columns, data }) {
-  const [sortConfig, setSortConfig] = useState(null);
+  const [sortConfig, setSortConfig] = useState([]);
   const [filters, setFilters] = useState({});
   const [page, setPage] = useState(1);
 
-  const toggleSort = (key: string) => {
+  const toggleSort = (key: string, isMulti: boolean) => {
     setSortConfig((prev) => {
-      if (prev?.key === key) {
-        return { key, dir: prev.dir === "asc" ? "desc" : "asc" };
+      const existing = prev.find((s) => s.key === key);
+      let newEntry = null;
+
+      if (!existing) {
+        newEntry = { key, dir: "asc" };
+      } else if (existing.dir === "asc") {
+        newEntry = { key, dir: "desc" };
       }
 
-      return { key: key, dir: "asc" };
+      let next;
+
+      if (isMulti) {
+        next = prev.filter((s) => s.key !== key);
+
+        if (newEntry) next.push(newEntry);
+      } else {
+        next = newEntry ? [newEntry] : [];
+      }
+
+      return next;
     });
 
     setPage(1);
   };
 
+  console.log(sortConfig);
+
   const sortedData = useMemo(() => {
     if (!sortConfig) return data;
 
-    const { key, dir } = sortConfig;
-
     return [...data].sort((a, b) => {
-      if (typeof a[key] === "number") {
-        if (a[key] < b[key]) return dir === "asc" ? -1 : 1;
-        if (a[key] > b[key]) return dir === "asc" ? 1 : -1;
-        return 0;
-      }
+      for (const { key, dir } of sortConfig) {
+        if (typeof a[key] === "number") {
+          if (a[key] < b[key]) return dir === "asc" ? -1 : 1;
+          if (a[key] > b[key]) return dir === "asc" ? 1 : -1;
+          return 0;
+        }
 
-      if (typeof a[key] === "string") {
-        if (a[key].localeCompare(b[key]) === 1) return dir === "asc" ? -1 : 1;
-        if (b[key].localeCompare(a[key]) === 1) return dir === "asc" ? 1 : -1;
-        return 0;
+        if (typeof a[key] === "string") {
+          if (a[key].localeCompare(b[key]) === 1) return dir === "asc" ? -1 : 1;
+          if (b[key].localeCompare(a[key]) === 1) return dir === "asc" ? 1 : -1;
+          return 0;
+        }
       }
     });
   }, [sortConfig, data]);
