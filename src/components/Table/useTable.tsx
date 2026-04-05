@@ -1,29 +1,43 @@
-import { useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState, type MouseEvent } from "react";
+import type {
+  Filters,
+  ResizingState,
+  RowData,
+  SortConfig,
+  UseTableProps,
+  UseTableReturn,
+} from "./types";
 
 const PAGE_SIZE = 5;
+const MIN_WIDTH = 150;
 
-function useTable({ columns, data }) {
-  const [sortConfig, setSortConfig] = useState([]);
-  const [filters, setFilters] = useState({});
+function useTable<T extends RowData>(
+  props: UseTableProps<T>,
+): UseTableReturn<T> {
+  const { data, columns } = props;
+
+  const [sortConfig, setSortConfig] = useState<SortConfig<T>[]>([]);
+  const [filters, setFilters] = useState<Filters<T>>({});
   const [page, setPage] = useState(1);
-  const [columnWidths, setColumnWidths] = useState<Record<string, number>>(
+  const [columnWidths, setColumnWidths] = useState<Record<keyof T, number>>(
     () => {
-      const initial: Record<string, number> = {};
+      const initial = {} as Record<keyof T, number>;
 
-      columns.forEach(
-        (column: Record<string, string>) => (initial[column.key] = 150),
-      );
+      columns.forEach((column) => {
+        initial[column.key] = 200;
+      });
 
       return initial;
     },
   );
 
-  const columnResizeRef = useRef(null);
+  const columnResizeRef = useRef<ResizingState<T> | null>(null);
+  const tableRef = useRef<HTMLTableElement | null>(null);
 
-  const toggleSort = (key: string, isMulti: boolean) => {
+  const toggleSort = (key: keyof T, isMulti = false) => {
     setSortConfig((prev) => {
       const existing = prev.find((s) => s.key === key);
-      let newEntry = null;
+      let newEntry: SortConfig<T> | null = null;
 
       if (!existing) {
         newEntry = { key, dir: "asc" };
@@ -31,7 +45,7 @@ function useTable({ columns, data }) {
         newEntry = { key, dir: "desc" };
       }
 
-      let next;
+      let next: SortConfig<T>[];
 
       if (isMulti) {
         next = prev.filter((s) => s.key !== key);
@@ -52,25 +66,30 @@ function useTable({ columns, data }) {
 
     return [...data].sort((a, b) => {
       for (const { key, dir } of sortConfig) {
-        if (typeof a[key] === "number") {
-          if (a[key] < b[key]) return dir === "asc" ? -1 : 1;
-          if (a[key] > b[key]) return dir === "asc" ? 1 : -1;
-          return 0;
+        const aVal = a[key];
+        const bVal = b[key];
+
+        let result = 0; // no sort
+
+        if (typeof aVal === "string" && typeof bVal === "string") {
+          result = aVal.localeCompare(bVal);
+        } else {
+          result = aVal < bVal ? -1 : aVal > bVal ? 1 : 0;
         }
 
-        if (typeof a[key] === "string") {
-          if (a[key].localeCompare(b[key]) === 1) return dir === "asc" ? -1 : 1;
-          if (b[key].localeCompare(a[key]) === 1) return dir === "asc" ? 1 : -1;
-          return 0;
+        if (result !== 0) {
+          return dir === "asc" ? result : -result;
         }
       }
+
+      return 0;
     });
   }, [sortConfig, data]);
 
   const filteredData = useMemo(() => {
     return sortedData.filter((row) => {
       return Object.entries(filters).every(([key, val]) => {
-        return String(row[key] || "")
+        return String(row[key])
           .toLowerCase()
           .includes(String(val).toLowerCase());
       });
@@ -90,8 +109,18 @@ function useTable({ columns, data }) {
       columnResizeRef.current;
 
     const delta = e.clientX - startX;
-    const newWidth = startWidth + delta;
-    const newNextWidth = nextWidth + delta;
+    let newWidth = startWidth + delta;
+    let newNextWidth = nextWidth - delta;
+
+    if (newWidth < MIN_WIDTH) {
+      newWidth = MIN_WIDTH;
+      newNextWidth = startWidth + nextWidth - MIN_WIDTH;
+    }
+
+    if (newNextWidth < MIN_WIDTH) {
+      newNextWidth = MIN_WIDTH;
+      newWidth = startWidth + nextWidth - MIN_WIDTH;
+    }
 
     requestAnimationFrame(() => {
       setColumnWidths((prev) => ({
@@ -102,25 +131,25 @@ function useTable({ columns, data }) {
     });
   };
 
-  const onMouseUp = (e: MouseEvent) => {
+  const onMouseUp = () => {
     columnResizeRef.current = null;
     document.body.style.userSelect = "";
     document.removeEventListener("mousemove", onMouseMove);
     document.removeEventListener("mouseup", onMouseUp);
   };
 
-  const onMouseDown = (e: MouseEvent, key: string, index: number) => {
+  const onMouseDown = (e: MouseEvent, key: keyof T, index: number) => {
     e.preventDefault();
 
-    const nextKey = columns[index + 1];
-    if (!nextKey) return;
+    const nextCol = columns[index + 1];
+    if (!nextCol) return;
 
     columnResizeRef.current = {
       key,
       startX: e.clientX,
       startWidth: columnWidths[key],
-      nextKey,
-      nextWidth: columnWidths[nextKey],
+      nextKey: nextCol.key,
+      nextWidth: columnWidths[nextCol.key],
     };
 
     document.body.style.userSelect = "none";
@@ -128,17 +157,45 @@ function useTable({ columns, data }) {
     document.addEventListener("mouseup", onMouseUp);
   };
 
+  const autoFitColumn = (key: keyof T) => {
+    const cells = tableRef.current?.querySelectorAll(
+      `[data-col="${String(key)}"]`,
+    );
+
+    let maxWidth = 0;
+
+    cells?.forEach((cell) => {
+      maxWidth = Math.max(maxWidth, cell.scrollWidth);
+    });
+
+    setColumnWidths((prev) => ({
+      ...prev,
+      [key]: Math.max(maxWidth, MIN_WIDTH) + 12 * 2, // adding padding
+    }));
+  };
+
+  const setFilter = (key: keyof T, value: string) => {
+    setFilters((prev) => ({
+      ...prev,
+      [key]: value,
+    }));
+
+    setPage(1);
+  };
+
   return {
-    data: finalData,
+    rows: finalData,
     toggleSort,
     page,
     totalPages,
     setPage,
     filters,
-    setFilters,
+    setFilter,
     sortConfig,
     columnWidths,
     onMouseDown,
+    tableRef,
+    autoFitColumn,
   };
 }
 

@@ -1,7 +1,8 @@
 import "./style.css";
+import type { Column, RowData, User } from "./types";
 import useTable from "./useTable";
 
-const columns = [
+const columns: Column<User>[] = [
   { key: "id", label: "ID" },
   { key: "name", label: "Name" },
   { key: "email", label: "Email" },
@@ -9,7 +10,7 @@ const columns = [
   { key: "status", label: "Status" },
 ];
 
-const initialData = [
+const initialData: RowData[] = [
   {
     id: 1,
     name: "Leanne Graham",
@@ -172,34 +173,38 @@ const initialData = [
   },
 ];
 
-function Table() {
+function Table<T extends RowData>() {
   const {
-    data,
+    rows,
     toggleSort,
     page,
     setPage,
     totalPages,
     filters,
-    setFilters,
+    setFilter,
     sortConfig,
     columnWidths,
     onMouseDown,
-  } = useTable({
+    tableRef,
+    autoFitColumn,
+  } = useTable<T>({
     columns,
     data: initialData,
   });
 
-  const getSortIndicator = (key: string) => {
+  const getSortIndicator = (key: keyof T) => {
     const idx = sortConfig.findIndex((s) => s.key === key);
     if (idx === -1) return "";
 
     const { dir } = sortConfig[idx];
-    return dir === "asc" ? <>&#8593;</> : <>&#8595;</>;
+    const arrow = dir === "asc" ? "↑" : "↓";
+
+    return `${arrow} (${idx + 1})`;
   };
 
   return (
-    <div>
-      <table>
+    <div style={{ width: "1000px" }}>
+      <table ref={tableRef}>
         <thead>
           <tr>
             {columns.map((column, index) => (
@@ -216,6 +221,7 @@ function Table() {
 
                 {index !== columns.length - 1 && (
                   <div
+                    onDoubleClick={() => autoFitColumn(column.key)}
                     onMouseDown={(e) => onMouseDown(e, column.key, index)}
                     style={{
                       position: "absolute",
@@ -239,13 +245,7 @@ function Table() {
                 <input
                   style={{ width: "90%" }}
                   value={filters[column.key] || ""}
-                  onChange={(e) => {
-                    setFilters((prev) => ({
-                      ...prev,
-                      [column.key]: e.target.value,
-                    }));
-                    setPage(1);
-                  }}
+                  onChange={(e) => setFilter(column.key, e.target.value)}
                 />
               </th>
             ))}
@@ -253,23 +253,13 @@ function Table() {
         </thead>
 
         <tbody>
-          {data.map((row) => (
+          {rows.map((row) => (
             <tr key={row.id}>
-              <td>
-                <span>{row.id}</span>
-              </td>
-              <td>
-                <span>{row.name}</span>
-              </td>
-              <td>
-                <span>{row.email}</span>
-              </td>
-              <td>
-                <span>{row.role}</span>
-              </td>
-              <td>
-                <span>{row.status}</span>
-              </td>
+              {columns.map((column) => (
+                <td key={column.key}>
+                  <div data-col={column.key}>{row[column.key]}</div>
+                </td>
+              ))}
             </tr>
           ))}
         </tbody>
