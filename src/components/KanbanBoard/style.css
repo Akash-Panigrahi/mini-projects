@@ -30,4 +30,5 @@
   align-items: center;
   justify-content: center;
   cursor: grab;
+  width: 100%;
 }

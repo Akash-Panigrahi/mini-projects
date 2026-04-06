@@ -50,6 +50,7 @@ const initialData: BoardState<{ content: string }> = {
 function KanbanBoard() {
   const [data, setData] = useState(initialData);
   const [dragState, setDragState] = useState<CardDragState | null>(null);
+  const [placeholder, setPlaceholder] = useState(null);
 
   const handleDragStart = (
     sourceColId: ColumnId,
@@ -63,8 +64,15 @@ function KanbanBoard() {
     });
   };
 
-  const handleDragOver = (e: DragEvent) => {
+  const handleDragOver = (e: DragEvent, colId: ColumnId, index: number) => {
     e.preventDefault();
+    e.stopPropagation();
+
+    setPlaceholder((prev) => {
+      if (prev && prev?.colId === colId && prev?.index === index) return prev;
+
+      return { colId, index };
+    });
   };
 
   const handleDrop = (
@@ -119,6 +127,12 @@ function KanbanBoard() {
     }
 
     setDragState(null);
+    setPlaceholder(null);
+  };
+
+  const handleDragEnd = (e: DragEvent) => {
+    setDragState(null);
+    setPlaceholder(null);
   };
 
   return (
@@ -130,29 +144,52 @@ function KanbanBoard() {
           <div
             key={columnId}
             className="column"
-            onDragOver={handleDragOver}
+            onDragOver={(e) =>
+              handleDragOver(e, columnId, column.cardIds.length)
+            }
             onDrop={(e) => handleDrop(e, columnId, column.cardIds.length)}
           >
             <h3>{column.name}</h3>
 
             <div className="cards">
+              {placeholder?.colId === columnId &&
+                column.cardIds.length === 0 && <div className="card" />}
+
               {column.cardIds.map((cardId, cardIndex) => {
                 const card = data.cards[cardId];
 
                 return (
-                  <div
-                    key={cardId}
-                    className="card"
-                    draggable
-                    onDragStart={() =>
-                      handleDragStart(columnId, cardId, cardIndex)
-                    }
-                    onDrop={(e) => handleDrop(e, columnId, cardIndex)}
-                  >
-                    {card.content}
-                  </div>
+                  <>
+                    {placeholder?.colId === columnId &&
+                      placeholder?.index === cardIndex && (
+                        <div className="card" />
+                      )}
+
+                    <div
+                      key={cardId}
+                      onDragOver={(e) => handleDragOver(e, columnId, cardIndex)}
+                    >
+                      <div
+                        className="card"
+                        draggable
+                        onDragStart={() =>
+                          handleDragStart(columnId, cardId, cardIndex)
+                        }
+                        onDragEnd={handleDragEnd}
+                        onDrop={(e) => handleDrop(e, columnId, cardIndex)}
+                      >
+                        {card.content}
+                      </div>
+                    </div>
+                  </>
                 );
               })}
+
+              {placeholder?.colId === columnId &&
+                column.cardIds.length !== 0 &&
+                column.cardIds.length === placeholder?.index && (
+                  <div className="card" />
+                )}
             </div>
           </div>
         );
