@@ -1,0 +1,33 @@
+.kanban-board {
+  display: flex;
+  gap: 32px;
+}
+
+.column {
+  padding: 24px;
+  background: #313030;
+  border-radius: 10px;
+  width: 160px;
+
+  h3 {
+    margin-top: 0;
+  }
+}
+
+.cards {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.card {
+  background-color: #3f3e3e;
+  padding: 32px;
+  height: 100px;
+  aspect-ratio: 1 / 1;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: grab;
+}

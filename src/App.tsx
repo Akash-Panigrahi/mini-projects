@@ -12,73 +12,79 @@ import InfiniteScrolling from "./components/InfiniteScrolling/InfiniteScrolling"
 import AutoComplete from "./components/AutoComplete/AutoComplete";
 import ReverseInfiniteScrolling from "./components/InfiniteScrolling/ReverseInfiniteScrolling";
 import Table from "./components/Table/Table";
+import KanbanBoard from "./components/KanbanBoard/KanbanBoard";
 
 const PROJECTS = [
   {
-    component: Home,
-    url: "/home",
+    Component: Home,
+    pathname: "home",
   },
   {
-    component: StarRating,
-    url: "/star-rating",
+    Component: StarRating,
+    pathname: "star-rating",
   },
   {
-    component: StarRatingHalf,
-    url: "/star-rating-half",
+    Component: StarRatingHalf,
+    pathname: "star-rating-half",
   },
   {
-    component: ToDo,
-    url: "/todo",
+    Component: ToDo,
+    pathname: "todo",
   },
   {
-    component: ModalPage,
-    url: "/modal",
+    Component: ModalPage,
+    pathname: "modal",
   },
   {
-    component: FileExplorer,
-    url: "/file-explorer",
+    Component: FileExplorer,
+    pathname: "file-explorer",
   },
   {
-    component: VirtualizedList,
-    url: "/virtualized-list",
+    Component: VirtualizedList,
+    pathname: "virtualized-list",
   },
   {
-    component: VirtualizedListVariableHeights,
-    url: "/virtualized-list-variable-heights",
+    Component: VirtualizedListVariableHeights,
+    pathname: "virtualized-list-variable-heights",
   },
   {
-    component: InfiniteScrolling,
-    url: "/infinite-scrolling",
+    Component: InfiniteScrolling,
+    pathname: "infinite-scrolling",
   },
   {
-    component: ReverseInfiniteScrolling,
-    url: "/reverse-infinite-scrolling",
+    Component: ReverseInfiniteScrolling,
+    pathname: "reverse-infinite-scrolling",
   },
   {
-    component: AutoComplete,
-    url: "/autocomplete",
+    Component: AutoComplete,
+    pathname: "autocomplete",
   },
   {
-    component: Table,
-    url: "/table",
+    Component: Table,
+    pathname: "table",
+  },
+  {
+    Component: KanbanBoard,
+    pathname: "kanban-board",
   },
 ];
 
 function App() {
   const pathname = window.location.pathname;
-  const Component = PROJECTS.find((project) => project.url === pathname)
-    ?.component || <></>;
+
+  const { Component } =
+    PROJECTS.find((project) => "/" + project.pathname === pathname) || {};
 
   if (pathname === "/") {
     return PROJECTS.map((project) => (
       <a
-        href={project.url}
-        key={project.url}
+        href={"/" + project.pathname}
+        key={project.pathname}
         style={{
           display: "block",
         }}
       >
-        {project.url}
+        {project.pathname}
       </a>
     ));
   }
