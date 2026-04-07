@@ -1,0 +1,33 @@
+.form-builder {
+  input,
+  select {
+    width: 160px;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .field {
+    display: flex;
+    gap: 16px;
+  }
+
+  .error {
+    height: 12px;
+    font-size: 12px;
+    color: red;
+    display: flex;
+  }
+
+  label {
+    margin-right: auto;
+  }
+
+  [type="submit"] {
+    align-self: center;
+    margin-top: 8px;
+  }
+}
