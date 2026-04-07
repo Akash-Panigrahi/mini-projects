@@ -13,6 +13,8 @@ import AutoComplete from "./components/AutoComplete/AutoComplete";
 import ReverseInfiniteScrolling from "./components/InfiniteScrolling/ReverseInfiniteScrolling";
 import Table from "./components/Table/Table";
 import KanbanBoard from "./components/KanbanBoard/KanbanBoard";
+import { Component } from "react";
+import FormBuilder from "./components/FormBuilder/FormBuilder";
 
 const PROJECTS = [
   {
@@ -66,6 +68,10 @@ const PROJECTS = [
   {
     Component: KanbanBoard,
     pathname: "kanban-board",
+  },
+  {
+    Component: FormBuilder,
+    pathname: "form-builder",
   },
 ];
 
