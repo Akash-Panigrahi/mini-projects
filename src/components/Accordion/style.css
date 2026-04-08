@@ -1,0 +1,39 @@
+.accordion {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.accordion-item {
+  width: 400px;
+  border-radius: 16px;
+  background: #1a1a1a;
+}
+
+.accordion-title {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  background: #1e1e1e;
+  padding: 16px;
+  border-radius: 16px;
+
+  h3 {
+    margin: 0;
+    flex: 1;
+    text-align: left;
+  }
+
+  button {
+    background-color: transparent;
+  }
+}
+
+.accordion-content {
+  transition: height 0.3s ease-in-out;
+  overflow: hidden;
+
+  div {
+    padding: 16px;
+  }
+}

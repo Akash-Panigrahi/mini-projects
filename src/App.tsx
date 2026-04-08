@@ -13,8 +13,8 @@ import AutoComplete from "./components/AutoComplete/AutoComplete";
 import ReverseInfiniteScrolling from "./components/InfiniteScrolling/ReverseInfiniteScrolling";
 import Table from "./components/Table/Table";
 import KanbanBoard from "./components/KanbanBoard/KanbanBoard";
-import { Component } from "react";
 import FormBuilder from "./components/FormBuilder/FormBuilder";
+import AccordionPage from "./components/Accordion/AccordionPage";
 
 const PROJECTS = [
   {
@@ -72,6 +72,10 @@ const PROJECTS = [
   {
     Component: FormBuilder,
     pathname: "form-builder",
+  },
+  {
+    Component: AccordionPage,
+    pathname: "accordion",
   },
 ];
 
