@@ -1,10 +1,11 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type KeyboardEvent } from "react";
 import useDebounce from "./useDebounce";
 import { highlight } from "./utils.tsx";
+import type { AutoCompleteDataItem } from "./types.ts";
 
 function AutoComplete() {
   const [query, setQuery] = useState("");
-  const [results, setResults] = useState([]);
+  const [results, setResults] = useState<AutoCompleteDataItem[]>([]);
   const [showDropdown, setShowDropdown] = useState(false);
   const [activeIndex, setActiveIndex] = useState(-1);
   const [loading, setLoading] = useState(false);
@@ -45,7 +46,7 @@ function AutoComplete() {
       });
   }, [debouncedQuery]);
 
-  const handleKeyDown = (e) => {
+  const handleKeyDown = (e: KeyboardEvent) => {
     if (!showDropdown) return;
 
     if (e.key === "ArrowDown") {
@@ -99,7 +100,7 @@ function AutoComplete() {
                   cursor: "pointer",
                 }}
                 key={result.id}
-                onMouseDown={(e) => {
+                onMouseDown={() => {
                   setQuery(result.name);
                   setShowDropdown(false);
                 }}
