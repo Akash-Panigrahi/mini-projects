@@ -5,6 +5,23 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>mini-projects</title>
+    <script>
+      (function () {
+        const storedTheme = localStorage.getItem("app-theme");
+        const systemTheme = window.matchMedia(
+          "(prefers-color-scheme: dark)",
+        ).matches;
+
+        const resolvedTheme =
+          storedTheme === "system"
+            ? systemTheme
+              ? "dark"
+              : "light"
+            : storedTheme;
+
+        document.documentElement.dataset.theme = resolvedTheme;
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

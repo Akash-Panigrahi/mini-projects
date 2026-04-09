@@ -1,0 +1,26 @@
+:root[data-theme="light"] {
+  --bg: #ffffff;
+  --text: #000000;
+}
+
+:root[data-theme="dark"] {
+  --bg: #000000;
+  --text: #ffffff;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+}
+
+.theme-toggle {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  button {
+    width: 120px;
+    display: flex;
+    justify-content: space-between;
+  }
+}

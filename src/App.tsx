@@ -15,6 +15,7 @@ import Table from "./components/Table/Table";
 import KanbanBoard from "./components/KanbanBoard/KanbanBoard";
 import FormBuilder from "./components/FormBuilder/FormBuilder";
 import AccordionPage from "./components/Accordion/AccordionPage";
+import ThemePage from "./components/Theme/ThemePage";
 
 const PROJECTS = [
   {
@@ -76,6 +77,10 @@ const PROJECTS = [
   {
     Component: AccordionPage,
     pathname: "accordion",
+  },
+  {
+    Component: ThemePage,
+    pathname: "theme",
   },
 ];
 
