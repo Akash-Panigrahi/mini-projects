@@ -16,6 +16,7 @@ import KanbanBoard from "./components/KanbanBoard/KanbanBoard";
 import FormBuilder from "./components/FormBuilder/FormBuilder";
 import AccordionPage from "./components/Accordion/AccordionPage";
 import ThemePage from "./components/Theme/ThemePage";
+import Pagination from "./components/Pagination/Pagination";
 
 const PROJECTS = [
   {
@@ -81,6 +82,10 @@ const PROJECTS = [
   {
     Component: ThemePage,
     pathname: "theme",
+  },
+  {
+    Component: Pagination,
+    pathname: "pagination",
   },
 ];
 
