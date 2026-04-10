@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import type { PaginationItem, UsePaginationProps } from "./types";
 
 const range = (start: number, end: number) => {
@@ -15,46 +15,42 @@ function usePagination(props: UsePaginationProps) {
 
   const [page, setPage] = useState(defaultPage);
 
-  const pages = useMemo(() => {
-    const pages = new Set<number>();
+  const totalSlots = siblingCount * 2 + boundaryCount * 2 + 3;
 
-    pages.add(1);
-    pages.add(totalPages);
+  if (totalPages <= totalSlots) {
+    return { pages: range(1, totalPages), currentPage: page, setPage };
+  }
 
-    for (let i = 1; i <= boundaryCount; i++) {
-      pages.add(i + 1);
-      pages.add(totalPages - i);
-    }
+  const middleSlots = 1 + siblingCount * 2;
 
-    for (let i = Math.abs(page - siblingCount); i <= page + siblingCount; i++) {
-      if (i >= 1 && i <= totalPages) {
-        pages.add(i);
-      }
-    }
+  let left = page - siblingCount;
+  let right = page + siblingCount;
 
-    const sorted = Array.from(pages).sort((a, b) => a - b);
+  // Clamp
+  if (left <= boundaryCount + 2) {
+    left = boundaryCount + 1;
+    right = left + middleSlots;
+  }
 
-    const result: PaginationItem[] = [];
+  if (right >= totalPages - boundaryCount - 1) {
+    right = totalPages - boundaryCount;
+    left = right - middleSlots;
+  }
 
-    for (let i = 0; i < sorted.length; i++) {
-      const prev = sorted[i - 1];
-      const curr = sorted[i];
+  const slots: PaginationItem[] = [];
 
-      if (i > 0 && prev + 1 !== curr) {
-        if (curr - prev === 2) {
-          result.push(prev + 1);
-        } else {
-          result.push("...");
-        }
-      }
+  for (let i = 1; i <= boundaryCount; i++) slots.push(i);
 
-      result.push(sorted[i]);
-    }
+  if (left > boundaryCount + 1) slots.push("start-ellipsis");
 
-    return result;
-  }, [page, totalPages, boundaryCount, siblingCount]);
+  for (let i = left; i <= right; i++) slots.push(i);
 
-  return { pages, currentPage: page, setPage };
+  if (right < totalPages - boundaryCount) slots.push("end-ellipsis");
+
+  for (let i = totalPages - boundaryCount + 1; i <= totalPages; i++)
+    slots.push(i);
+
+  return { pages: slots, currentPage: page, setPage };
 }
 
 export default usePagination;

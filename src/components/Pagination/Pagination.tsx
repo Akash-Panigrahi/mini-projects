@@ -1,22 +1,35 @@
 import usePagination from "./usePagination";
 import "./style.css";
 
+const TOTAL_PAGES = 10;
+
 function Pagination() {
   const { pages, currentPage, setPage } = usePagination({
     siblingCount: 1,
-    boundaryCount: 2,
-    totalPages: 20,
-    defaultPage: 10,
+    boundaryCount: 1,
+    totalPages: TOTAL_PAGES,
+    defaultPage: 5,
   });
+
+  const handlePageChange = (page: number) => {
+    setPage(Number(page));
+  };
 
   return (
     <div className="pagination">
-      <button onClick={() => setPage(currentPage - 1)}>Prev</button>
+      <div className="page">
+        <button
+          disabled={currentPage === 1}
+          onClick={() => handlePageChange(currentPage - 1)}
+        >
+          ◀
+        </button>
+      </div>
 
-      {pages.map((page, i) => {
-        if (page === "...") {
+      {pages.map((page) => {
+        if (page === "start-ellipsis" || page === "end-ellipsis") {
           return (
-            <div className="page" key={`ellipsis-${i}`}>
+            <div className="page" key={page}>
               ...
             </div>
           );
@@ -25,8 +38,10 @@ function Pagination() {
         return (
           <div key={page} className="page">
             <button
-              style={{ borderColor: currentPage === page ? "#61dafb" : "" }}
-              onClick={() => setPage(page)}
+              style={{
+                borderColor: currentPage === page ? "#61dafb" : "",
+              }}
+              onClick={() => handlePageChange(page)}
             >
               {page}
             </button>
@@ -34,7 +49,14 @@ function Pagination() {
         );
       })}
 
-      <button onClick={() => setPage(currentPage + 1)}>Next</button>
+      <div className="page">
+        <button
+          disabled={currentPage === TOTAL_PAGES}
+          onClick={() => handlePageChange(currentPage + 1)}
+        >
+          ▶
+        </button>
+      </div>
     </div>
   );
 }

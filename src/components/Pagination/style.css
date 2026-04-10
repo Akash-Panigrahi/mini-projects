@@ -5,6 +5,13 @@
 }
 
 .page {
-  transition: scale 100ms ease-out;
   width: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  button {
+    background-color: transparent;
+    transition: none;
+  }
 }
