@@ -17,6 +17,7 @@ import FormBuilder from "./components/FormBuilder/FormBuilder";
 import AccordionPage from "./components/Accordion/AccordionPage";
 import ThemePage from "./components/Theme/ThemePage";
 import Pagination from "./components/Pagination/Pagination";
+import StepperPage from "./components/Stepper/StepperPage";
 
 const PROJECTS = [
   {
@@ -86,6 +87,10 @@ const PROJECTS = [
   {
     Component: Pagination,
     pathname: "pagination",
+  },
+  {
+    Component: StepperPage,
+    pathname: "stepper",
   },
 ];
 
