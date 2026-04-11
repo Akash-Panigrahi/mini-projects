@@ -20,6 +20,7 @@ import Pagination from "./components/Pagination/Pagination";
 import StepperPage from "./components/Stepper/StepperPage";
 import { Component } from "react";
 import Stopwatch from "./components/Stopwatch/Stopwatch";
+import CountdownTimer from "./components/CountdownTimer/CountdownTimer";
 
 const PROJECTS = [
   {
@@ -97,6 +98,10 @@ const PROJECTS = [
   {
     Component: Stopwatch,
     pathname: "stopwatch",
+  },
+  {
+    Component: CountdownTimer,
+    pathname: "countdown-timer",
   },
 ];
 
