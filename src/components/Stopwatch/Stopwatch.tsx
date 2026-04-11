@@ -1,41 +1,46 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import "./style.css";
 
 function Stopwatch() {
   const [elapsedTime, setElapsedTime] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
-  const startTimeRef = useRef<number>(null);
-  const rAFRef = useRef<number>(null);
+  const [startTime, setStartTime] = useState<number | null>(null);
 
   useEffect(() => {
-    return () => {
-      if (rAFRef.current) cancelAnimationFrame(rAFRef.current);
-    };
-  }, []);
+    if (!isRunning) return;
 
-  const handleStart = () => {
-    if (isRunning) return;
-
-    if (!startTimeRef.current) startTimeRef.current = Date.now();
+    let rafId: number;
+    let lastUpdate = 0;
 
     const tick = () => {
-      setElapsedTime(Date.now() - startTimeRef.current!);
+      const now = Date.now();
 
-      rAFRef.current = requestAnimationFrame(tick);
+      if (now - lastUpdate > 50) {
+        setElapsedTime(now - startTime!);
+        lastUpdate = now;
+      }
+
+      rafId = requestAnimationFrame(tick);
     };
 
-    rAFRef.current = requestAnimationFrame(tick);
+    rafId = requestAnimationFrame(tick);
+
+    return () => cancelAnimationFrame(rafId);
+  }, [isRunning, startTime]);
+
+  const handleStart = () => {
+    setStartTime(Date.now() - elapsedTime); // resume support
+    setIsRunning(true);
   };
 
   const handlePause = () => {
     setIsRunning(false);
-    if (rAFRef.current) cancelAnimationFrame(rAFRef.current);
   };
 
   const handleReset = () => {
-    handlePause();
+    setIsRunning(false);
     setElapsedTime(0);
-    startTimeRef.current = null;
+    setStartTime(null);
   };
 
   const formatTime = (ms: number) => {
