@@ -18,6 +18,8 @@ import AccordionPage from "./components/Accordion/AccordionPage";
 import ThemePage from "./components/Theme/ThemePage";
 import Pagination from "./components/Pagination/Pagination";
 import StepperPage from "./components/Stepper/StepperPage";
+import { Component } from "react";
+import Stopwatch from "./components/Stopwatch/Stopwatch";
 
 const PROJECTS = [
   {
@@ -91,6 +93,10 @@ const PROJECTS = [
   {
     Component: StepperPage,
     pathname: "stepper",
+  },
+  {
+    Component: Stopwatch,
+    pathname: "stopwatch",
   },
 ];
 
