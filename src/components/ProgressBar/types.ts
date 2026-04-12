@@ -1,3 +1,9 @@
-export type ProgressBarProps = {
-  value?: number;
-};
+export type ProgressBarProps =
+  | {
+      variant: "indeterminate";
+    }
+  | {
+      variant: "determinate";
+      value: number;
+      buffer?: number;
+    };

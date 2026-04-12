@@ -1,15 +1,19 @@
 import { useEffect, useState } from "react";
 import ProgressBar from "./ProgressBar";
 
+const random = (min: number, max: number) => {
+  return min + Math.floor(Math.random() * (max - min + 1));
+};
+
 function ProgressBarPage() {
   const [width, setWidth] = useState(0);
 
   useEffect(() => {
     const id = setInterval(() => {
-      const random = 5 + Math.floor(Math.random() * (20 - 5 + 1));
+      const incr = random(5, 20);
 
       setWidth((prev) => {
-        const next = prev + random;
+        const next = prev + incr;
 
         if (next > 100) {
           clearInterval(id);
@@ -24,9 +28,15 @@ function ProgressBarPage() {
 
   return (
     <div className="progress-bar-page">
-      <ProgressBar value={width} />
+      <ProgressBar variant="determinate" value={width} />
 
-      <ProgressBar />
+      <ProgressBar
+        variant="determinate"
+        value={width}
+        buffer={width + random(5, 20)}
+      />
+
+      <ProgressBar variant="indeterminate" />
 
       <progress value={width} max="100" />
     </div>
