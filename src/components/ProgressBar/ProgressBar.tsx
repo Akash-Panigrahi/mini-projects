@@ -1,11 +1,16 @@
 import "./style.css";
+import type { ProgressBarProps } from "./types";
 
-function ProgressBar({ value = 50 }) {
-  const safeValue = Math.max(0, Math.min(value, 100));
+function ProgressBar({ value }: ProgressBarProps) {
+  const safeValue = value === undefined ? 0 : Math.max(0, Math.min(value, 100));
 
   return (
     <div className="progress-bar">
-      <div className="value" style={{ width: `${safeValue}%` }} />
+      {value ? (
+        <div className="determinate" style={{ width: `${safeValue}%` }} />
+      ) : (
+        <div className="indeterminate" />
+      )}
     </div>
   );
 }

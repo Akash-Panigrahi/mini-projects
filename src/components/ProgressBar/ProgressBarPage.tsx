@@ -26,6 +26,8 @@ function ProgressBarPage() {
     <div className="progress-bar-page">
       <ProgressBar value={width} />
 
+      <ProgressBar />
+
       <progress value={width} max="100" />
     </div>
   );
