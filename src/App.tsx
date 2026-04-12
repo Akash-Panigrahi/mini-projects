@@ -18,9 +18,9 @@ import AccordionPage from "./components/Accordion/AccordionPage";
 import ThemePage from "./components/Theme/ThemePage";
 import Pagination from "./components/Pagination/Pagination";
 import StepperPage from "./components/Stepper/StepperPage";
-import { Component } from "react";
 import Stopwatch from "./components/Stopwatch/Stopwatch";
 import CountdownTimer from "./components/CountdownTimer/CountdownTimer";
+import ProgressBarPage from "./components/ProgressBar/ProgressBarPage";
 
 const PROJECTS = [
   {
@@ -103,6 +103,10 @@ const PROJECTS = [
     Component: CountdownTimer,
     pathname: "countdown-timer",
   },
+  {
+    Component: ProgressBarPage,
+    pathname: "progress-bar",
+  },
 ];
 
 function App() {
@@ -120,7 +124,10 @@ function App() {
           display: "block",
         }}
       >
-        {project.pathname}
+        {project.pathname
+          .split("-")
+          .map((word) => word[0].toUpperCase() + word.slice(1))
+          .join(" ")}
       </a>
     ));
   }
