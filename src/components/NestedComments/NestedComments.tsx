@@ -87,6 +87,21 @@ function NestedComments() {
     });
   };
 
+  const handleToggleCollapse = (id: CommentTypeId) => {
+    setState((prev) => {
+      return {
+        ...prev,
+        nodes: {
+          ...prev.nodes,
+          [id]: {
+            ...prev.nodes[id],
+            isCollapsed: !prev.nodes[id].isCollapsed,
+          },
+        },
+      };
+    });
+  };
+
   return (
     <div className="nested-comments">
       {state.rootIds.map((rootId: CommentTypeId) => (
@@ -95,6 +110,7 @@ function NestedComments() {
           state={state}
           id={rootId}
           onReply={handleReply}
+          onToggleCollapse={handleToggleCollapse}
         />
       ))}
     </div>

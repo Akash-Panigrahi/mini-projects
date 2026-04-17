@@ -17,4 +17,5 @@ export type CommentItemProps = {
   state: CommentState;
   id: CommentTypeId;
   onReply: (id: CommentTypeId, newReply: string) => void;
+  onToggleCollapse: (id: CommentTypeId) => void;
 };

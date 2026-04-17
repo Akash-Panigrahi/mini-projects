@@ -1,6 +1,18 @@
 .nested-comments {
   width: 60vmin;
 
+  .comment-toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    button {
+      font-size: 16px;
+      padding: 4px 12px;
+      width: 40px;
+    }
+  }
+
   .comment-text {
     text-align: left;
   }
