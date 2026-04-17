@@ -3,10 +3,18 @@ export type CommentTypeId = string;
 export type CommentType = {
   id: CommentTypeId;
   text: string;
-  children: CommentType[];
+  parentId: string | null;
+  childrenIds: CommentTypeId[];
+  isCollapsed: boolean;
+};
+
+export type CommentState = {
+  nodes: Record<CommentTypeId, CommentType>;
+  rootIds: CommentTypeId[];
 };
 
 export type CommentItemProps = {
-  comment: CommentType;
+  state: CommentState;
+  id: CommentTypeId;
   onReply: (id: CommentTypeId, newReply: string) => void;
 };

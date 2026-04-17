@@ -1,87 +1,101 @@
 import { useState } from "react";
-import type { CommentType, CommentTypeId } from "./types";
+import type { CommentState, CommentTypeId } from "./types";
 import CommentItem from "./CommentItem";
 import "./style.css";
 
-const initialComments: CommentType[] = [
-  {
-    id: "1",
-    text: "Root comment 1",
-    children: [
-      {
-        id: "1.1",
-        text: "Child comment 1.1",
-        children: [
-          {
-            id: "1.1.1",
-            text: "Child comment 1.1.1",
-            children: [],
-          },
-        ],
-      },
-      {
-        id: "1.2",
-        text: "Child comment 1.2",
-        children: [],
-      },
-    ],
+const initialState: CommentState = {
+  nodes: {
+    "1": {
+      id: "1",
+      text: "Root comment 1",
+      parentId: null,
+      isCollapsed: false,
+      childrenIds: ["1.1", "1.2"],
+    },
+    "1.1": {
+      id: "1.1",
+      text: "Child comment 1.1",
+      parentId: "1",
+      isCollapsed: false,
+      childrenIds: ["1.1.1"],
+    },
+    "1.1.1": {
+      id: "1.1.1",
+      text: "Child comment 1.1.1",
+      parentId: "1.1",
+      isCollapsed: false,
+      childrenIds: [],
+    },
+    "1.2": {
+      id: "1.2",
+      text: "Child comment 1.2",
+      parentId: "1",
+      isCollapsed: false,
+      childrenIds: [],
+    },
+    "2": {
+      id: "2",
+      text: "Root comment 2",
+      parentId: null,
+      isCollapsed: false,
+      childrenIds: ["2.1"],
+    },
+    "2.1": {
+      id: "2.1",
+      text: "Child comment 2.1",
+      parentId: "2",
+      isCollapsed: false,
+      childrenIds: [],
+    },
+    "3": {
+      id: "3",
+      text: "Root comment 3",
+      parentId: null,
+      isCollapsed: false,
+      childrenIds: [],
+    },
   },
-  {
-    id: "2",
-    text: "Root comment 2",
-    children: [
-      {
-        id: "2.1",
-        text: "Child comment 2.1",
-        children: [],
-      },
-    ],
-  },
-  {
-    id: "3",
-    text: "Root comment 3",
-    children: [],
-  },
-];
-
-function addReply(
-  comments: CommentType[],
-  parentId: CommentTypeId,
-  newReply: string,
-) {
-  return comments.map((comment): CommentType => {
-    if (comment.id === parentId) {
-      return {
-        ...comment,
-        children: [
-          ...comment.children,
-          {
-            id: crypto.randomUUID(),
-            text: newReply,
-            children: [],
-          },
-        ],
-      };
-    }
-
-    return {
-      ...comment,
-      children: addReply(comment.children, parentId, newReply),
-    };
-  });
-}
+  rootIds: ["1", "2", "3"],
+};
 
 function NestedComments() {
-  const [comments, setComments] = useState(initialComments);
+  const [state, setState] = useState(initialState);
 
   const handleReply = (parentId: CommentTypeId, newReply: string) => {
-    setComments((prev) => addReply(prev, parentId, newReply));
+    const id = crypto.randomUUID();
+
+    setState((prev) => {
+      const parent = prev.nodes[parentId];
+
+      return {
+        nodes: {
+          ...prev.nodes,
+          [id]: {
+            id,
+            parentId,
+            childrenIds: [],
+            text: newReply,
+            isCollapsed: false,
+          },
+          [parentId]: {
+            ...parent,
+            childrenIds: [...parent.childrenIds, id],
+          },
+        },
+        rootIds: prev.rootIds,
+      };
+    });
   };
 
   return (
     <div className="nested-comments">
-      {comments.map((comment: CommentType) => (
-        <CommentItem key={comment.id} comment={comment} onReply={handleReply} />
+      {state.rootIds.map((rootId: CommentTypeId) => (
+        <CommentItem
+          key={rootId}
+          state={state}
+          id={rootId}
+          onReply={handleReply}
+        />
       ))}
     </div>
   );

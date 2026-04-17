@@ -1,7 +1,8 @@
 import { useState } from "react";
-import type { CommentItemProps, CommentType } from "./types";
+import type { CommentItemProps, CommentTypeId } from "./types";
 
-function CommentItem({ comment, onReply }: CommentItemProps) {
+function CommentItem({ state, id, onReply }: CommentItemProps) {
+  const comment = state.nodes[id];
   const [showInput, setShowInput] = useState(false);
   const [input, setInput] = useState("");
 
@@ -16,7 +17,11 @@ function CommentItem({ comment, onReply }: CommentItemProps) {
 
         {showInput && (
           <>
-            <input value={input} onChange={(e) => setInput(e.target.value)} />
+            <input
+              autoFocus
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+            />
 
             <button
               onClick={() => {
@@ -40,13 +45,15 @@ function CommentItem({ comment, onReply }: CommentItemProps) {
         )}
       </div>
 
-      {comment.children.map((childComment: CommentType) => (
-        <CommentItem
-          key={childComment.id}
-          comment={childComment}
-          onReply={onReply}
-        />
-      ))}
+      {!comment.isCollapsed &&
+        comment.childrenIds.map((childId: CommentTypeId) => (
+          <CommentItem
+            key={childId}
+            state={state}
+            id={childId}
+            onReply={onReply}
+          />
+        ))}
     </div>
   );
 }
