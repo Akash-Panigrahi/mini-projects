@@ -18,4 +18,5 @@ export type CommentItemProps = {
   id: CommentTypeId;
   onReply: (id: CommentTypeId, newReply: string) => void;
   onToggleCollapse: (id: CommentTypeId) => void;
+  onDelete: (id: CommentTypeId) => void;
 };

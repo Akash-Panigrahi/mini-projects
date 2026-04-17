@@ -6,6 +6,7 @@ function CommentItem({
   id,
   onReply,
   onToggleCollapse,
+  onDelete,
 }: CommentItemProps) {
   const comment = state.nodes[id];
   const [showInput, setShowInput] = useState(false);
@@ -54,6 +55,8 @@ function CommentItem({
             </button>
           </>
         )}
+
+        <button onClick={() => onDelete(comment.id)}>❌</button>
       </div>
 
       {!comment.isCollapsed &&
@@ -64,6 +67,7 @@ function CommentItem({
             id={childId}
             onReply={onReply}
             onToggleCollapse={onToggleCollapse}
+            onDelete={onDelete}
           />
         ))}
     </div>

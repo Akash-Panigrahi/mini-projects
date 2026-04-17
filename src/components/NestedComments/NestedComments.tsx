@@ -102,6 +102,45 @@ function NestedComments() {
     });
   };
 
+  const handleDelete = (id: CommentTypeId) => {
+    setState((prev) => {
+      const node = prev.nodes[id];
+      if (!node) return prev;
+
+      const newNodes = { ...prev.nodes };
+      const newRootIds = [...prev.rootIds];
+
+      // update root ids or parent children ids
+      if (node.parentId === null) {
+        const index = newRootIds.indexOf(id);
+        newRootIds.splice(index, 1, ...node.childrenIds);
+      } else {
+        const parent = newNodes[node.parentId];
+        const index = parent.childrenIds.indexOf(id);
+        const updatedChildrenIds = [...parent.childrenIds];
+        updatedChildrenIds.splice(index, 1, ...node.childrenIds);
+
+        newNodes[parent.id] = {
+          ...newNodes[parent.id],
+          childrenIds: updatedChildrenIds,
+        };
+      }
+
+      // update children's parent ids
+      node.childrenIds.forEach((childId) => {
+        newNodes[childId].parentId = node.parentId;
+      });
+
+      // remove node
+      delete newNodes[id];
+
+      return {
+        nodes: newNodes,
+        rootIds: newRootIds,
+      };
+    });
+  };
+
   return (
     <div className="nested-comments">
       {state.rootIds.map((rootId: CommentTypeId) => (
@@ -111,6 +150,7 @@ function NestedComments() {
           id={rootId}
           onReply={handleReply}
           onToggleCollapse={handleToggleCollapse}
+          onDelete={handleDelete}
         />
       ))}
     </div>
