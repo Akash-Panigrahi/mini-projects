@@ -1,0 +1,31 @@
+.nested-comments {
+  width: 60vmin;
+
+  .comment-text {
+    text-align: left;
+  }
+
+  & > .comment-item {
+    border: 0 !important;
+  }
+
+  .comment-item {
+    padding-left: 20px;
+    border-left: 1px solid black;
+
+    &:not(:first-child) {
+      padding-top: 10px;
+    }
+  }
+
+  .actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+    justify-content: end;
+
+    button {
+      font-size: 10px;
+    }
+  }
+}

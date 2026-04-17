@@ -21,6 +21,7 @@ import StepperPage from "./components/Stepper/StepperPage";
 import Stopwatch from "./components/Stopwatch/Stopwatch";
 import CountdownTimer from "./components/CountdownTimer/CountdownTimer";
 import ProgressBarPage from "./components/ProgressBar/ProgressBarPage";
+import NestedComments from "./components/NestedComments/NestedComments";
 
 const PROJECTS = [
   {
@@ -106,6 +107,10 @@ const PROJECTS = [
   {
     Component: ProgressBarPage,
     pathname: "progress-bar",
+  },
+  {
+    Component: NestedComments,
+    pathname: "nested-comments",
   },
 ];
 
