@@ -97,16 +97,15 @@ function TicTacToeKInN({ n = 3, k = 3 }: TTTKInNProps) {
         {board.map((cell, idx) => {
           const row = Math.floor(idx / n);
           const col = idx % n;
+          const isWinningCell = winner.cells.has(`${row},${col}`);
 
           return (
             <div
               key={idx}
-              className="cell"
+              className={`cell ${isWinningCell ? "win" : ""}`}
               onClick={() => handleCellClick(row, col, idx)}
               style={{
-                backgroundColor: winner.cells.has(`${row},${col}`)
-                  ? "green"
-                  : "",
+                backgroundColor: isWinningCell ? "green" : "",
                 cursor: winner.state ? "not-allowed" : "pointer",
               }}
             >
