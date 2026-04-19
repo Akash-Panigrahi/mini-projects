@@ -1,15 +1,15 @@
 import { useState } from "react";
 import "./style.css";
-import type { TTTBoard, TTTCell } from "./types";
+import type { TTTBoard, TTTNxNProps, TTTNxNWinningState } from "./types";
 
-function TicTacToeNxN({ n = 3 }: { n: number }) {
+function TicTacToeNxN({ n = 3 }: TTTNxNProps) {
   const [board, setBoard] = useState<TTTBoard>(Array(n * n).fill(null));
   const [isXNext, setIsXNext] = useState(true);
   const [rows, setRows] = useState(Array(n).fill(0));
   const [cols, setCols] = useState(Array(n).fill(0));
   const [diag, setDiag] = useState(0);
   const [antiDiag, setAntiDiag] = useState(0);
-  const [winner, setWinner] = useState<{ state: boolean; player: TTTCell }>({
+  const [winner, setWinner] = useState<TTTNxNWinningState>({
     state: false,
     player: null,
   });
