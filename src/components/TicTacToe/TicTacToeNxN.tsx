@@ -17,13 +17,16 @@ function TicTacToeNxN({ n = 3 }: { n: number }) {
   const handleCellClick = (idx: number) => {
     if (board[idx] || winner.state) return;
 
+    const row = Math.floor(idx / n);
+    const col = idx % n;
+
     const d = isXNext ? 1 : -1;
 
     const newRows = [...rows];
-    newRows[idx] += d;
+    newRows[row] += d;
 
     const newCols = [...cols];
-    newCols[idx] += d;
+    newCols[col] += d;
 
     const newBoard = [...board];
     newBoard[idx] = isXNext ? "X" : "O";
@@ -31,15 +34,12 @@ function TicTacToeNxN({ n = 3 }: { n: number }) {
     let newDiag = diag;
     let newAntiDiag = antiDiag;
 
-    const row = Math.floor(idx / n);
-    const col = idx % n;
-
     if (row === col) newDiag += d;
     if (row + col === n - 1) newAntiDiag += d;
 
     if (
-      Math.abs(newRows[idx]) === n ||
-      Math.abs(newCols[idx]) === n ||
+      Math.abs(newRows[row]) === n ||
+      Math.abs(newCols[col]) === n ||
       Math.abs(newDiag) === n ||
       Math.abs(newAntiDiag) === n
     ) {
