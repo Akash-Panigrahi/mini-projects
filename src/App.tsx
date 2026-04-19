@@ -22,6 +22,7 @@ import Stopwatch from "./components/Stopwatch/Stopwatch";
 import CountdownTimer from "./components/CountdownTimer/CountdownTimer";
 import ProgressBarPage from "./components/ProgressBar/ProgressBarPage";
 import NestedComments from "./components/NestedComments/NestedComments";
+import TicTacToe from "./components/TicTacToe/TicTacToe";
 
 const PROJECTS = [
   {
@@ -112,6 +113,10 @@ const PROJECTS = [
     Component: NestedComments,
     pathname: "nested-comments",
   },
+  {
+    Component: TicTacToe,
+    pathname: "tic-tac-toe",
+  },
 ];
 
 function App() {
@@ -121,20 +126,25 @@ function App() {
     PROJECTS.find((project) => "/" + project.pathname === pathname) || {};
 
   if (pathname === "/") {
-    return PROJECTS.map((project) => (
-      <a
-        href={"/" + project.pathname}
-        key={project.pathname}
-        style={{
-          display: "block",
-        }}
-      >
-        {project.pathname
-          .split("-")
-          .map((word) => word[0].toUpperCase() + word.slice(1))
-          .join(" ")}
-      </a>
-    ));
+    return (
+      <div className="projects">
+        {PROJECTS.map((project, idx) => (
+          <a
+            href={"/" + project.pathname}
+            key={project.pathname}
+            style={{
+              display: "block",
+            }}
+          >
+            {idx + 1}:{" "}
+            {project.pathname
+              .split("-")
+              .map((word) => word[0].toUpperCase() + word.slice(1))
+              .join(" ")}
+          </a>
+        ))}
+      </div>
+    );
   }
 
   return (

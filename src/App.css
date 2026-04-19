@@ -43,3 +43,14 @@
 .read-the-docs {
   color: #888;
 }
+
+.projects {
+  display: flex;
+  flex-wrap: wrap;
+
+  a {
+    display: inline-block;
+    padding: 16px;
+    border: 1px solid var(--text);
+  }
+}
