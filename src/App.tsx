@@ -22,7 +22,7 @@ import Stopwatch from "./components/Stopwatch/Stopwatch";
 import CountdownTimer from "./components/CountdownTimer/CountdownTimer";
 import ProgressBarPage from "./components/ProgressBar/ProgressBarPage";
 import NestedComments from "./components/NestedComments/NestedComments";
-import TicTacToe from "./components/TicTacToe/TicTacToe";
+import TicTacToePage from "./components/TicTacToe/TicTacToePage";
 
 const PROJECTS = [
   {
@@ -114,7 +114,7 @@ const PROJECTS = [
     pathname: "nested-comments",
   },
   {
-    Component: TicTacToe,
+    Component: TicTacToePage,
     pathname: "tic-tac-toe",
   },
 ];
