@@ -23,6 +23,7 @@ import CountdownTimer from "./components/CountdownTimer/CountdownTimer";
 import ProgressBarPage from "./components/ProgressBar/ProgressBarPage";
 import NestedComments from "./components/NestedComments/NestedComments";
 import TicTacToePage from "./components/TicTacToe/TicTacToePage";
+import Weather from "./components/Weather/Weather";
 
 const PROJECTS = [
   {
@@ -116,6 +117,10 @@ const PROJECTS = [
   {
     Component: TicTacToePage,
     pathname: "tic-tac-toe",
+  },
+  {
+    Component: Weather,
+    pathname: "weather",
   },
 ];
 

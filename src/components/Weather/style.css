@@ -1,0 +1,11 @@
+.weather {
+  .search-bar {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+
+  .data-item {
+    text-align: left;
+  }
+}
