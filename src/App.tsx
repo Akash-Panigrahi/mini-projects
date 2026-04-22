@@ -24,6 +24,7 @@ import ProgressBarPage from "./components/ProgressBar/ProgressBarPage";
 import NestedComments from "./components/NestedComments/NestedComments";
 import TicTacToePage from "./components/TicTacToe/TicTacToePage";
 import Weather from "./components/Weather/Weather";
+import Quiz from "./components/Quiz/Quiz";
 
 const PROJECTS = [
   {
@@ -121,6 +122,10 @@ const PROJECTS = [
   {
     Component: Weather,
     pathname: "weather",
+  },
+  {
+    Component: Quiz,
+    pathname: "quiz",
   },
 ];
 

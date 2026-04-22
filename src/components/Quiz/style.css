@@ -1,0 +1,32 @@
+.quiz {
+  .options {
+    display: flex;
+    flex-direction: column;
+
+    label {
+      display: flex;
+      padding: 8px;
+      border-radius: 8px;
+    }
+
+    input {
+      margin: 0;
+      margin-right: 16px;
+    }
+  }
+
+  .timer {
+    margin: 24px 0;
+  }
+
+  .review-quiz {
+    .question {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-bottom: 24px;
+      border-bottom: 1px solid #646cff;
+      padding-bottom: 24px;
+    }
+  }
+}

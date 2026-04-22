@@ -1,0 +1,37 @@
+[
+  {
+    "id": 1,
+    "question": "Which planet is known as the 'Red Planet'?",
+    "options": ["Venus", "Mars", "Jupiter", "Saturn"],
+    "answer": "Mars"
+  },
+  {
+    "id": 2,
+    "question": "What is the chemical symbol for water?",
+    "options": ["CO2", "H2O", "NaCl", "O2"],
+    "answer": "H2O"
+  },
+  {
+    "id": 3,
+    "question": "Which is the largest ocean in the world?",
+    "options": [
+      "Atlantic Ocean",
+      "Indian Ocean",
+      "Arctic Ocean",
+      "Pacific Ocean"
+    ],
+    "answer": "Pacific Ocean"
+  },
+  {
+    "id": 4,
+    "question": "In which year did World War II end?",
+    "options": ["1918", "1939", "1945", "1950"],
+    "answer": "1945"
+  },
+  {
+    "id": 5,
+    "question": "How many bones are there in an adult human body?",
+    "options": ["180", "206", "210", "300"],
+    "answer": "206"
+  }
+]
