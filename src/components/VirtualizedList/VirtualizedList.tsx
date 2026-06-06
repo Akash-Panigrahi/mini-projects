@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 
-const dummyList = Array.from({ length: 1000 }, (_, i) => ({ id: i, title: i }));
+const dummyList = Array.from({ length: 1000 }, (_, i) => i + 1);
 const ITEM_HEIGHT = 40;
 const MAX_CONTAINER_HEIGHT = 400;
 const BUFFER = 5;
@@ -40,7 +40,7 @@ function VirtualizedList({ list = dummyList }) {
         <div style={{ translate: `0 ${from * ITEM_HEIGHT}px` }}>
           {visibleItems.map((item) => (
             <div
-              key={item.id}
+              key={item}
               style={{
                 height: ITEM_HEIGHT,
                 display: "flex",
@@ -50,9 +50,8 @@ function VirtualizedList({ list = dummyList }) {
                 padding: "8px 16px",
               }}
             >
-              <span>{item.id}</span>
               <span
-                title={String(item.title)}
+                title={String(item)}
                 style={{
                   marginLeft: "16px",
                   flex: 1,
@@ -62,7 +61,7 @@ function VirtualizedList({ list = dummyList }) {
                   whiteSpace: "nowrap",
                 }}
               >
-                {item.title}
+                {item}
               </span>
             </div>
           ))}
